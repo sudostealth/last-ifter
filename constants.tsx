@@ -104,7 +104,8 @@ export const TRANSLATIONS = {
     invalidPhone: "Invalid phone number",
     invalidId: "Invalid student ID format",
     required: "This field is required",
-    mapLabel: "Find Us Here"
+    mapLabel: "Find Us Here",
+    invalidEmail: "Invalid email address"
   },
   bn: {
     title: "শেষ ইফতার পার্টি",
@@ -134,6 +135,7 @@ export const TRANSLATIONS = {
     invalidPhone: "ভুল ফোন নাম্বার",
     invalidId: "ভুল আইডি ফরম্যাট",
     required: "এই তথ্যটি আবশ্যক",
-    mapLabel: "আমাদের অবস্থান"
+    mapLabel: "আমাদের অবস্থান",
+    invalidEmail: "ভুল ইমেইল"
   }
 };
