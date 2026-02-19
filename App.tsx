@@ -1,0 +1,551 @@
+
+import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { 
+  Globe, 
+  Moon, 
+  Sun, 
+  Github, 
+  Menu as MenuIcon, 
+  X,
+  Calendar,
+  Clock,
+  MapPin,
+  CircleDollarSign,
+  LucideIcon,
+  Utensils,
+  Coffee,
+  Waves,
+  Beef,
+  Cookie,
+  Flame,
+  Sparkles,
+  Droplets,
+  Apple,
+  Zap,
+  ExternalLink,
+  ArrowRight,
+  Navigation,
+  Quote
+} from 'lucide-react';
+import { Language, Theme } from './types';
+import { TRANSLATIONS, MENU_ITEMS, EVENT_CONFIG, RAMADAN_QUOTES } from './constants';
+import StarryBackground from './components/StarryBackground';
+import Countdown from './components/Countdown';
+import RegistrationForm from './components/RegistrationForm';
+
+const IconMap: Record<string, LucideIcon> = {
+  Coffee, Utensils, Waves, Beef, Cookie, Flame, Droplets, Apple, Zap
+};
+
+interface GitHubUser {
+  avatar_url: string;
+  name: string;
+  bio: string;
+  html_url: string;
+}
+
+const App: React.FC = () => {
+  const [lang, setLang] = useState<Language>(Language.EN);
+  const [theme, setTheme] = useState<Theme>(Theme.DARK);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
+  const [devData, setDevData] = useState<GitHubUser | null>(null);
+  const [currentQuoteIdx, setCurrentQuoteIdx] = useState(0);
+  const { scrollY } = useScroll();
+
+  const heroY = useTransform(scrollY, [0, 500], [0, 150]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const bgTranslateY = useTransform(scrollY, [0, 1000], [0, -200]);
+
+  const t = TRANSLATIONS[lang];
+  const isDark = theme === Theme.DARK;
+
+  useEffect(() => {
+    document.body.style.overflow = isRegistrationOpen ? 'hidden' : 'auto';
+  }, [isRegistrationOpen]);
+
+  useEffect(() => {
+    fetch('https://api.github.com/users/sudostealth')
+      .then(res => res.json())
+      .then(data => setDevData(data))
+      .catch(err => console.error("Dev fetch failed", err));
+  }, []);
+
+  useEffect(() => {
+    const quoteInterval = setInterval(() => {
+      setCurrentQuoteIdx(prev => (prev + 1) % RAMADAN_QUOTES.length);
+    }, 8000);
+    return () => clearInterval(quoteInterval);
+  }, []);
+
+  const toggleTheme = () => setTheme(prev => prev === Theme.DARK ? Theme.LIGHT : Theme.DARK);
+
+  return (
+    <div className={`relative min-h-[100dvh] transition-colors duration-1000 selection:bg-yellow-500/30 selection:text-yellow-200 ${
+      isDark ? 'bg-emerald-950 text-white' : 'bg-emerald-50 text-emerald-950'
+    }`}>
+      <StarryBackground theme={theme} />
+
+      {/* Navigation */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b transition-all duration-500 py-3 sm:py-4 px-4 sm:px-8 md:px-12 flex justify-between items-center ${
+        isDark ? 'bg-emerald-950/20 border-white/5' : 'bg-white/50 border-emerald-100'
+      }`}>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <motion.div 
+            whileHover={{ rotate: 15 }}
+            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-lg ${isDark ? 'bg-yellow-500 text-emerald-950' : 'bg-emerald-600 text-white'}`}
+          >
+             <Moon size={16} className="sm:w-5 sm:h-5" fill="currentColor" />
+          </motion.div>
+          <span className={`font-cinzel text-sm sm:text-base md:text-xl font-bold tracking-tight ${isDark ? 'text-yellow-400' : 'text-emerald-800'}`}>
+            231 CSE <span className="hidden xs:inline">| IFTAR</span>
+          </span>
+        </div>
+
+        {/* Updated: Countdown hidden in Header for Desktop/PC view to avoid duplication. 
+            Now it only shows the theme/lang toggles and the CTA. */}
+        <div className="hidden lg:flex items-center gap-4 xl:gap-6">
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={toggleTheme}
+              className={`p-2.5 rounded-full transition-all hover:scale-110 active:scale-95 ${isDark ? 'hover:bg-white/10 text-yellow-400' : 'hover:bg-emerald-100 text-emerald-600'}`}
+            >
+              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <button 
+              onClick={() => setLang(lang === Language.EN ? Language.BN : Language.EN)}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all text-xs xl:text-sm font-bold ${isDark ? 'text-emerald-100/70 hover:text-yellow-400 border-white/5 hover:bg-white/5' : 'text-emerald-800/70 hover:text-emerald-600 border-emerald-100 hover:bg-emerald-50'}`}
+            >
+              <Globe size={16} />
+              {lang === Language.EN ? "BN" : "EN"}
+            </button>
+            <div className={`h-6 w-[1px] mx-2 ${isDark ? 'bg-white/10' : 'bg-emerald-200'}`} />
+            <button 
+              onClick={() => setIsRegistrationOpen(true)}
+              className={`font-bold px-5 xl:px-7 py-2.5 rounded-full text-sm transition-all shadow-lg transform hover:-translate-y-0.5 hover:shadow-xl ${
+                isDark ? 'bg-yellow-500 text-emerald-950 hover:bg-yellow-400 shadow-yellow-500/20' : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-emerald-500/20'
+              }`}
+            >
+              {t.register}
+            </button>
+          </div>
+        </div>
+
+        <div className="lg:hidden flex items-center gap-1 sm:gap-2">
+          <button onClick={toggleTheme} className="p-2 transition-transform active:scale-90">{isDark ? <Sun size={20} /> : <Moon size={20} />}</button>
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 transition-transform active:scale-90">
+            {isMenuOpen ? <X size={24} /> : <MenuIcon size={24} />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative pt-32 sm:pt-48 pb-20 px-4 sm:px-8 md:px-12 min-h-[95dvh] flex flex-col items-center justify-center text-center overflow-hidden">
+        <motion.div style={{ y: heroY, opacity }} className="max-w-6xl z-10 w-full flex flex-col items-center">
+          
+          {/* Main Countdown - Clear prominence in Hero content */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="mb-12 sm:mb-20 flex justify-center scale-90 sm:scale-100 lg:scale-125 xl:scale-[1.35] transition-transform"
+          >
+            <Countdown lang={lang} />
+          </motion.div>
+
+          <motion.h1 
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className={`text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-cinzel font-bold bg-clip-text text-transparent leading-[1] sm:leading-[1.1] ${
+              isDark ? 'bg-gradient-to-r from-yellow-100 via-yellow-400 to-yellow-600' : 'bg-gradient-to-r from-emerald-600 via-emerald-800 to-emerald-900'
+            } ${lang === 'bn' ? 'font-bengali' : ''}`}
+          >
+            {t.title}
+          </motion.h1>
+          
+          <motion.p 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className={`mt-8 text-lg sm:text-2xl md:text-3xl tracking-wide font-light max-w-4xl mx-auto leading-relaxed ${isDark ? 'text-emerald-100/80' : 'text-emerald-900/80'}`}
+          >
+            {t.subtitle}
+          </motion.p>
+          
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 2, delay: 0.8 }}
+            className={`mt-12 italic max-w-3xl mx-auto border-y py-8 sm:py-10 px-6 font-serif text-sm sm:text-lg md:text-xl leading-loose ${isDark ? 'text-emerald-200/60 border-white/5' : 'text-emerald-800/60 border-emerald-100'}`}
+          >
+            "{t.quote}"
+          </motion.div>
+
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 1.2 }}
+            className="mt-16 flex flex-col sm:flex-row gap-5 sm:gap-8 justify-center items-center"
+          >
+            <button 
+              onClick={() => setIsRegistrationOpen(true)}
+              className={`w-full sm:w-auto group relative font-bold px-10 sm:px-14 py-4 sm:py-5 rounded-full transition-all text-base sm:text-xl flex items-center justify-center gap-3 overflow-hidden ${
+                isDark ? 'bg-yellow-500 text-emerald-950 hover:bg-yellow-400 shadow-2xl shadow-yellow-500/30' : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-2xl shadow-emerald-500/30'
+              }`}
+            >
+              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+              {t.register}
+              <Sparkles size={24} className="animate-pulse" />
+            </button>
+            <a href="#menu" className={`transition-all flex items-center gap-3 border-b-2 pb-1 hover:gap-5 text-lg font-medium group ${isDark ? 'text-white/60 hover:text-white border-white/5 hover:border-white/20' : 'text-emerald-900/60 hover:text-emerald-950 border-emerald-100 hover:border-emerald-300'}`}>
+              {lang === 'en' ? "Explore Menu" : "মেনু দেখুন"}
+              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            </a>
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div 
+          animate={{ y: [0, 15, 0] }} 
+          transition={{ repeat: Infinity, duration: 2.5 }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-30 cursor-pointer hidden sm:block"
+        >
+          <div className="w-7 h-12 border-2 border-current rounded-full flex justify-center pt-2">
+            <motion.div 
+               animate={{ opacity: [1, 0, 1] }}
+               transition={{ duration: 1.5, repeat: Infinity }}
+               className="w-1.5 h-1.5 bg-current rounded-full" 
+            />
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Rotating Ramadan Quotes Section */}
+      <section className="py-20 sm:py-32 px-6 relative z-10 overflow-hidden">
+        <div className="max-w-5xl mx-auto text-center">
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={currentQuoteIdx}
+                    initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 1.05, y: -30 }}
+                    transition={{ duration: 1.2, ease: "easeOut" }}
+                    className="space-y-8 sm:space-y-12"
+                >
+                    <Quote className={`mx-auto opacity-10 w-12 h-12 sm:w-20 sm:h-20 ${isDark ? 'text-yellow-400' : 'text-emerald-600'}`} />
+                    <h2 className={`text-3xl sm:text-5xl md:text-6xl font-serif font-bold tracking-tight leading-tight ${isDark ? 'text-yellow-100' : 'text-emerald-900'}`}>
+                        {RAMADAN_QUOTES[currentQuoteIdx].arabic}
+                    </h2>
+                    <div className="space-y-4">
+                        <p className={`text-lg sm:text-2xl md:text-3xl font-cinzel italic tracking-wide ${isDark ? 'text-emerald-100/70' : 'text-emerald-800/70'}`}>
+                            {RAMADAN_QUOTES[currentQuoteIdx].en}
+                        </p>
+                        <p className={`text-lg sm:text-2xl md:text-3xl font-bengali opacity-60 ${isDark ? 'text-emerald-100/50' : 'text-emerald-800/50'}`}>
+                            {RAMADAN_QUOTES[currentQuoteIdx].bn}
+                        </p>
+                    </div>
+                </motion.div>
+            </AnimatePresence>
+        </div>
+      </section>
+
+      {/* Menu Section */}
+      <section id="menu" className={`py-24 sm:py-40 px-4 sm:px-8 md:px-12 relative z-10 ${isDark ? 'bg-emerald-950/40 backdrop-blur-md' : 'bg-emerald-100/30 backdrop-blur-md'}`}>
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16 sm:mb-28"
+          >
+            <h2 className={`text-4xl sm:text-6xl md:text-7xl font-cinzel font-bold mb-6 ${isDark ? 'text-yellow-400' : 'text-emerald-800'}`}>{t.menu}</h2>
+            <div className={`h-1.5 w-24 sm:w-40 mx-auto rounded-full ${isDark ? 'bg-gradient-to-r from-transparent via-yellow-500 to-transparent' : 'bg-gradient-to-r from-transparent via-emerald-600 to-transparent'}`} />
+          </motion.div>
+
+          <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-10">
+            {MENU_ITEMS.map((item, idx) => {
+              const IconComp = IconMap[item.icon] || Utensils;
+              return (
+                <motion.div 
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.08 }}
+                  whileHover={{ y: -12, scale: 1.03 }}
+                  className={`group border rounded-[2rem] sm:rounded-[2.5rem] p-8 sm:p-10 transition-all duration-700 shadow-2xl relative overflow-hidden ${
+                    isDark ? 'bg-emerald-900/40 border-white/5 hover:border-yellow-500/40 hover:bg-emerald-900/60' : 'bg-white border-emerald-100 hover:border-emerald-400/40'
+                  }`}
+                >
+                  <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-5 transition-transform duration-1000 group-hover:scale-150 ${isDark ? 'bg-yellow-500' : 'bg-emerald-500'}`} />
+                  
+                  <div className={`w-14 h-14 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl flex items-center justify-center mb-6 sm:mb-8 transition-all duration-700 ${
+                    isDark ? 'bg-yellow-500/10 group-hover:bg-yellow-500 group-hover:shadow-[0_0_30px_rgba(234,179,8,0.3)]' : 'bg-emerald-100 group-hover:bg-emerald-600 group-hover:shadow-[0_0_30px_rgba(5,150,105,0.3)]'
+                  }`}>
+                    <IconComp className={`transition-all duration-700 w-7 h-7 sm:w-10 sm:h-10 ${
+                      isDark ? 'text-yellow-400 group-hover:text-emerald-950' : 'text-emerald-700 group-hover:text-white'
+                    }`} />
+                  </div>
+                  <h3 className={`text-xl sm:text-2xl font-bold mb-4 tracking-tight ${isDark ? 'text-yellow-100' : 'text-emerald-900'}`}>{item.name[lang]}</h3>
+                  <p className={`text-sm sm:text-base leading-relaxed font-light opacity-70 ${isDark ? 'text-emerald-100/60' : 'text-emerald-800/60'}`}>{item.description[lang]}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Details Section */}
+      <section id="details" className="py-24 sm:py-40 px-4 sm:px-8 md:px-12 relative z-10 overflow-hidden">
+        <motion.div 
+          style={{ y: bgTranslateY }}
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 100, ease: "linear" }}
+          className="absolute -top-48 -left-48 opacity-[0.03] pointer-events-none w-96 h-96 sm:w-[800px] sm:h-[800px]"
+        >
+          <svg width="100%" height="100%" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 0L55 35L90 40L60 60L70 95L50 75L30 95L40 60L10 40L45 35Z" />
+          </svg>
+        </motion.div>
+
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row gap-12 sm:gap-20 items-stretch">
+            {/* Creative Info Cards */}
+            <div className="flex-1 space-y-10 md:space-y-16">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="mb-12 text-center lg:text-left"
+              >
+                <h2 className={`text-5xl sm:text-7xl font-cinzel font-bold mb-6 ${isDark ? 'text-yellow-400' : 'text-emerald-800'}`}>{t.details}</h2>
+                <p className={`text-lg sm:text-xl opacity-60 leading-relaxed ${!isDark && 'text-emerald-900'}`}>Every detail crafted for an unforgettable evening under the crescent moon.</p>
+              </motion.div>
+
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-6 sm:gap-8">
+                {[
+                  { icon: Calendar, label: t.date, value: EVENT_CONFIG.date, color: "from-blue-500/20 to-indigo-500/20" },
+                  { icon: Clock, label: t.time, value: EVENT_CONFIG.time, color: "from-orange-500/20 to-yellow-500/20" },
+                  { icon: Navigation, label: t.location, value: "Central Field", color: "from-emerald-500/20 to-teal-500/20" },
+                  { icon: MapPin, label: "Campus", value: "Permanent Campus", color: "from-pink-500/20 to-rose-500/20" }
+                ].map((info, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.12 }}
+                    whileHover={{ y: -10, scale: 1.05 }}
+                    className={`relative p-8 sm:p-10 rounded-[2.5rem] sm:rounded-[3rem] border overflow-hidden group transition-all duration-700 ${
+                      isDark ? 'bg-white/5 border-white/5 hover:border-yellow-500/20' : 'bg-white border-emerald-100 shadow-2xl'
+                    }`}
+                  >
+                    <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${info.color}`} />
+                    <div className="relative z-10">
+                      <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[2rem] flex items-center justify-center mb-6 sm:mb-8 transition-all group-hover:scale-110 ${
+                        isDark ? 'bg-white/5' : 'bg-emerald-50'
+                      }`}>
+                        <info.icon className={`${isDark ? 'text-yellow-400' : 'text-emerald-600'} w-7 h-7 sm:w-8 h-8`} />
+                      </div>
+                      <h4 className={`text-[10px] sm:text-xs uppercase tracking-[0.2em] font-black mb-2 opacity-40 ${!isDark && 'text-emerald-950'}`}>{info.label}</h4>
+                      <p className={`text-xl sm:text-2xl font-bold font-cinzel leading-tight ${!isDark && 'text-emerald-950'}`}>{info.value}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className={`p-10 sm:p-14 rounded-[3rem] border relative overflow-hidden group shadow-2xl ${
+                   isDark ? 'bg-gradient-to-r from-yellow-500/10 via-yellow-500/5 to-transparent border-yellow-500/30' : 'bg-gradient-to-r from-emerald-600/10 via-emerald-600/5 to-transparent border-emerald-200'
+                }`}
+              >
+                <div className="flex flex-col md:flex-row justify-between items-center gap-10">
+                  <div className="text-center md:text-left">
+                    <h3 className={`text-3xl sm:text-5xl font-cinzel font-black ${isDark ? 'text-yellow-400' : 'text-emerald-800'}`}>{t.fee} : BDT {EVENT_CONFIG.fee}</h3>
+                    <p className={`text-base sm:text-lg opacity-60 mt-4 leading-relaxed ${!isDark && 'text-emerald-950'}`}>Inclusive of full premium buffet and exclusive Batch 231 memorabilia.</p>
+                  </div>
+                  <button 
+                    onClick={() => setIsRegistrationOpen(true)}
+                    className={`w-full md:w-auto whitespace-nowrap font-black px-12 py-5 rounded-full transition-all text-lg flex items-center justify-center gap-4 group shadow-2xl hover:scale-105 active:scale-95 ${
+                      isDark ? 'bg-yellow-500 text-emerald-950 hover:bg-yellow-400' : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                    }`}
+                  >
+                    {t.payment} <Sparkles size={24} className="animate-pulse" />
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Map Container */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="flex-1 min-h-[450px] sm:min-h-[650px] relative rounded-[3rem] sm:rounded-[4rem] overflow-hidden border shadow-2xl group transition-all duration-1000"
+              style={{ borderColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }}
+            >
+              <div className={`absolute top-6 left-6 sm:top-10 sm:left-10 z-20 px-6 sm:px-8 py-3 sm:py-5 rounded-3xl backdrop-blur-2xl border flex items-center gap-4 ${
+                isDark ? 'bg-emerald-950/70 border-white/10' : 'bg-white/80 border-emerald-100 shadow-2xl'
+              }`}>
+                <div className={`p-3 sm:p-4 rounded-2xl ${isDark ? 'bg-yellow-500' : 'bg-emerald-600'}`}>
+                  <Navigation className={`${isDark ? 'text-emerald-950' : 'text-white'} w-6 h-6 sm:w-8 sm:h-8`} />
+                </div>
+                <div>
+                  <span className={`text-[10px] sm:text-xs uppercase font-black tracking-widest opacity-40 ${!isDark && 'text-emerald-950'}`}>{t.mapLabel}</span>
+                  <p className={`text-sm sm:text-lg font-bold leading-tight ${!isDark && 'text-emerald-950'}`}>GUB Central Field, Purbachal</p>
+                </div>
+              </div>
+
+              <iframe 
+                title="GUB Location"
+                className="w-full h-full transition-all duration-1000 group-hover:scale-110"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.5447703083327!2d90.49132207590861!3d23.87321018449646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755cd2287f39423%3A0xc3f608976f0c13d9!2sGreen%20University%20of%20Bangladesh%20(Permanent%20Campus)!5e0!3m2!1sen!2sbd!4v1709214711612!5m2!1sen!2sbd"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                style={{ border: 0, filter: isDark ? 'grayscale(1) invert(0.9) hue-rotate(180deg) brightness(0.8)' : 'none' }}
+              />
+              <div className="absolute inset-0 pointer-events-none border-[12px] sm:border-[20px] border-emerald-950/10 group-hover:border-transparent transition-all duration-700 rounded-[3rem] sm:rounded-[4rem]" />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className={`py-16 sm:py-24 px-4 sm:px-8 md:px-12 border-t relative z-10 transition-colors duration-1000 ${
+        isDark ? 'bg-[#010b0a]/95 border-white/5' : 'bg-white/90 border-emerald-100'
+      }`}>
+        <div className="max-w-7xl mx-auto flex flex-col gap-12 sm:gap-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 sm:gap-20 items-start text-center sm:text-left">
+            <div className="space-y-6 flex flex-col items-center sm:items-start">
+              <div className="flex items-center gap-4">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-xl ${isDark ? 'bg-yellow-500 text-emerald-950' : 'bg-emerald-600 text-white'}`}>
+                   <Moon size={20} fill="currentColor" />
+                </div>
+                <span className={`font-cinzel font-black text-xl sm:text-2xl tracking-tight ${isDark ? 'text-yellow-400' : 'text-emerald-800'}`}>BATCH 231 CSE</span>
+              </div>
+              <p className={`text-sm sm:text-base font-light max-w-sm leading-relaxed opacity-60 ${isDark ? 'text-emerald-100/60' : 'text-emerald-800/60'}`}>
+                Celebrating brotherhood and the journey of Batch 231. Department of Computer Science & Engineering, Green University of Bangladesh.
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center sm:items-start gap-6">
+              <h4 className={`text-xs sm:text-sm uppercase tracking-[0.3em] font-black opacity-30 ${isDark ? 'text-emerald-100' : 'text-emerald-800'}`}>The Creator</h4>
+              {devData ? (
+                <motion.a 
+                  href={devData.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  className={`flex items-center gap-5 p-5 sm:p-6 rounded-[2rem] border transition-all w-full max-w-sm group shadow-xl ${
+                    isDark ? 'bg-white/5 border-white/5 hover:border-yellow-500/30' : 'bg-emerald-50 border-emerald-100 hover:border-emerald-500/30 shadow-2xl'
+                  }`}
+                >
+                  <img src={devData.avatar_url} alt="sudostealth" className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-yellow-500/50 shadow-2xl group-hover:border-yellow-500" />
+                  <div className="overflow-hidden text-left">
+                    <div className="flex items-center gap-1.5">
+                      <h5 className={`font-black text-base sm:text-lg ${isDark ? 'text-yellow-400' : 'text-emerald-700'}`}>{devData.name || "sudostealth"}</h5>
+                      <ExternalLink size={14} className="opacity-30 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <p className={`text-xs sm:text-sm truncate opacity-50 ${isDark ? 'text-emerald-100' : 'text-emerald-800'}`}>{devData.bio || "Full-Stack Engineer"}</p>
+                  </div>
+                </motion.a>
+              ) : (
+                <div className="h-24 w-full animate-pulse bg-white/5 rounded-[2rem] max-w-xs" />
+              )}
+            </div>
+
+            <div className="flex flex-col items-center md:items-end gap-6">
+              <h4 className={`text-xs sm:text-sm uppercase tracking-[0.3em] font-black opacity-30 ${isDark ? 'text-emerald-100' : 'text-emerald-800'}`}>Connect</h4>
+              <div className="flex gap-6">
+                <a href="https://github.com/sudostealth" target="_blank" className={`p-4 sm:p-5 rounded-full transition-all active:scale-90 hover:scale-110 shadow-xl ${isDark ? 'bg-white/5 hover:bg-yellow-500 hover:text-emerald-950' : 'bg-emerald-100 hover:bg-emerald-600 hover:text-white'}`}>
+                  <Github size={24} />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className={`pt-12 border-t flex flex-col sm:flex-row justify-between items-center gap-8 ${isDark ? 'border-white/5' : 'border-emerald-100'}`}>
+            <p className={`text-xs sm:text-sm text-center sm:text-left font-medium tracking-wide opacity-20 ${isDark ? 'text-emerald-100' : 'text-emerald-800'}`}>
+              &copy; 2026 GUB Batch 231 Dept of CSE. Handcrafted with heart by sudostealth.
+            </p>
+            <div className={`text-[10px] sm:text-xs uppercase tracking-[0.4em] font-black flex items-center gap-3 transition-opacity duration-1000 ${isDark ? 'text-yellow-500/40' : 'text-emerald-600/40'}`}>
+              <Sparkles size={16} /> Ramadan Kareem <Sparkles size={16} />
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* Modals & Overlays */}
+      <AnimatePresence>
+        {isRegistrationOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+          >
+            <div 
+              className={`absolute inset-0 backdrop-blur-3xl ${isDark ? 'bg-emerald-950/80' : 'bg-emerald-50/80'}`}
+              onClick={() => setIsRegistrationOpen(false)}
+            />
+            <div className="relative z-10 w-full max-w-lg overflow-y-auto max-h-[95dvh] rounded-[2.5rem] shadow-[0_0_100px_rgba(0,0,0,0.5)] hide-scrollbar">
+              <button 
+                onClick={() => setIsRegistrationOpen(false)}
+                className={`absolute top-6 right-6 z-20 transition-all p-3 rounded-full backdrop-blur-3xl border ${isDark ? 'text-white/60 hover:text-white bg-white/5 border-white/5' : 'text-emerald-950/60 hover:text-emerald-950 bg-emerald-950/5 border-emerald-950/5'}`}
+              >
+                <X size={24} />
+              </button>
+              <RegistrationForm lang={lang} theme={theme} onClose={() => setIsRegistrationOpen(false)} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Sidebar */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setIsMenuOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-xl z-[55]"
+            />
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 35, stiffness: 350 }}
+              className={`fixed inset-y-0 right-0 w-[85%] max-w-sm z-[60] border-l shadow-[0_0_50px_rgba(0,0,0,0.5)] p-10 pt-32 ${
+                isDark ? 'bg-emerald-950 border-white/10 text-white' : 'bg-white border-emerald-100 text-emerald-950'
+              }`}
+            >
+              <div className="flex flex-col gap-10">
+                <a href="#menu" onClick={() => setIsMenuOpen(false)} className={`text-3xl font-cinzel font-bold transition-all hover:translate-x-3 ${isDark ? 'text-yellow-400' : 'text-emerald-800'}`}>{t.menu}</a>
+                <a href="#details" onClick={() => setIsMenuOpen(false)} className={`text-3xl font-cinzel font-bold transition-all hover:translate-x-3 ${isDark ? 'text-yellow-400' : 'text-emerald-800'}`}>{t.details}</a>
+                <div className={`h-[1px] ${isDark ? 'bg-white/10' : 'bg-emerald-100'}`} />
+                <div className="scale-90 origin-left">
+                   <Countdown lang={lang} />
+                </div>
+                <button 
+                  onClick={() => { setIsRegistrationOpen(true); setIsMenuOpen(false); }}
+                  className={`w-full font-black py-5 rounded-3xl text-xl shadow-2xl transition-all active:scale-95 ${
+                    isDark ? 'bg-yellow-500 text-emerald-950 shadow-yellow-500/20' : 'bg-emerald-600 text-white shadow-emerald-500/20'
+                  }`}
+                >
+                  {t.register}
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export default App;
