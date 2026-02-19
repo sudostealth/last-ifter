@@ -292,7 +292,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                   className={`relative flex-1 py-4 rounded-2xl transition-all border-2 overflow-hidden flex flex-col items-center justify-center gap-2 ${
                     formData.paymentMethod === 'bkash' 
                     ? 'bg-[#D12053] border-[#D12053] text-white shadow-xl shadow-[#D12053]/20 scale-[1.05] z-10' 
-                    : 'bg-white/10 border-white/10 opacity-70 hover:opacity-100'
+                    : (isDark ? 'bg-white/10 border-white/10' : 'bg-emerald-50 border-emerald-200') + ' opacity-70 hover:opacity-100'
                   }`}
                 >
                   <img src="https://raw.githubusercontent.com/Nayeem-231/icons/main/bkash.png" alt="bKash" className="w-12 h-auto" onError={(e) => (e.currentTarget.style.display = 'none')} />
@@ -304,7 +304,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                   className={`relative flex-1 py-4 rounded-2xl transition-all border-2 overflow-hidden flex flex-col items-center justify-center gap-2 ${
                     formData.paymentMethod === 'rocket' 
                     ? 'bg-[#8C3494] border-[#8C3494] text-white shadow-xl shadow-[#8C3494]/20 scale-[1.05] z-10' 
-                    : 'bg-white/10 border-white/10 opacity-70 hover:opacity-100'
+                    : (isDark ? 'bg-white/10 border-white/10' : 'bg-emerald-50 border-emerald-200') + ' opacity-70 hover:opacity-100'
                   }`}
                 >
                   <img src="https://raw.githubusercontent.com/Nayeem-231/icons/main/rocket.png" alt="Rocket" className="w-12 h-auto" onError={(e) => (e.currentTarget.style.display = 'none')} />
