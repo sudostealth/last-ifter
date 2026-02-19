@@ -39,6 +39,7 @@ export const submitToGoogleSheet = async (data: RegistrationData): Promise<boole
  *     sheet.appendRow([
  *       new Date(),
  *       data.name,
+ *       data.studentId,
  *       data.email,
  *       data.phone,
  *       data.batch,

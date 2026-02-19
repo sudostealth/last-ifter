@@ -133,6 +133,13 @@ const App: React.FC = () => {
         </div>
 
         <div className="lg:hidden flex items-center gap-1 sm:gap-2">
+          <button
+            onClick={() => setLang(lang === Language.EN ? Language.BN : Language.EN)}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all text-xs font-bold ${isDark ? 'text-emerald-100/70 border-white/5 bg-white/5' : 'text-emerald-800/70 border-emerald-100 bg-emerald-50'}`}
+          >
+            <Globe size={14} />
+            {lang === Language.EN ? "BN" : "EN"}
+          </button>
           <button onClick={toggleTheme} className="p-2 transition-transform active:scale-90">{isDark ? <Sun size={20} /> : <Moon size={20} />}</button>
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 transition-transform active:scale-90">
             {isMenuOpen ? <X size={24} /> : <MenuIcon size={24} />}
@@ -329,7 +336,7 @@ const App: React.FC = () => {
                   { icon: Calendar, label: t.date, value: EVENT_CONFIG.date, color: "from-blue-500/20 to-indigo-500/20" },
                   { icon: Clock, label: t.time, value: EVENT_CONFIG.time, color: "from-orange-500/20 to-yellow-500/20" },
                   { icon: Navigation, label: t.location, value: "Central Field", color: "from-emerald-500/20 to-teal-500/20" },
-                  { icon: MapPin, label: "Campus", value: "Permanent Campus", color: "from-pink-500/20 to-rose-500/20" }
+                  { icon: MapPin, label: "Campus", value: "Permanent Campus | Green University of Bangladesh | Rupganj, Narayanganj", color: "from-pink-500/20 to-rose-500/20" }
                 ].map((info, idx) => (
                   <motion.div
                     key={idx}
@@ -350,35 +357,12 @@ const App: React.FC = () => {
                         <info.icon className={`${isDark ? 'text-yellow-400' : 'text-emerald-600'} w-7 h-7 sm:w-8 h-8`} />
                       </div>
                       <h4 className={`text-[10px] sm:text-xs uppercase tracking-[0.2em] font-black mb-2 opacity-40 ${!isDark && 'text-emerald-950'}`}>{info.label}</h4>
-                      <p className={`text-xl sm:text-2xl font-bold font-cinzel leading-tight ${!isDark && 'text-emerald-950'}`}>{info.value}</p>
+                      <p className={`${info.label === "Campus" ? "text-sm sm:text-base" : "text-xl sm:text-2xl"} font-bold font-cinzel leading-tight ${!isDark && 'text-emerald-950'}`}>{info.value}</p>
                     </div>
                   </motion.div>
                 ))}
               </div>
               
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className={`p-10 sm:p-14 rounded-[3rem] border relative overflow-hidden group shadow-2xl ${
-                   isDark ? 'bg-gradient-to-r from-yellow-500/10 via-yellow-500/5 to-transparent border-yellow-500/30' : 'bg-gradient-to-r from-emerald-600/10 via-emerald-600/5 to-transparent border-emerald-200'
-                }`}
-              >
-                <div className="flex flex-col md:flex-row justify-between items-center gap-10">
-                  <div className="text-center md:text-left">
-                    <h3 className={`text-3xl sm:text-5xl font-cinzel font-black ${isDark ? 'text-yellow-400' : 'text-emerald-800'}`}>{t.fee} : BDT {EVENT_CONFIG.fee}</h3>
-                    <p className={`text-base sm:text-lg opacity-60 mt-4 leading-relaxed ${!isDark && 'text-emerald-950'}`}>Inclusive of full premium buffet and exclusive Batch 231 memorabilia.</p>
-                  </div>
-                  <button 
-                    onClick={() => setIsRegistrationOpen(true)}
-                    className={`w-full md:w-auto whitespace-nowrap font-black px-12 py-5 rounded-full transition-all text-lg flex items-center justify-center gap-4 group shadow-2xl hover:scale-105 active:scale-95 ${
-                      isDark ? 'bg-yellow-500 text-emerald-950 hover:bg-yellow-400' : 'bg-emerald-600 text-white hover:bg-emerald-700'
-                    }`}
-                  >
-                    {t.payment} <Sparkles size={24} className="animate-pulse" />
-                  </button>
-                </div>
-              </motion.div>
             </div>
 
             {/* Map Container */}
@@ -412,6 +396,30 @@ const App: React.FC = () => {
               <div className="absolute inset-0 pointer-events-none border-[12px] sm:border-[20px] border-emerald-950/10 group-hover:border-transparent transition-all duration-700 rounded-[3rem] sm:rounded-[4rem]" />
             </motion.div>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className={`mt-12 sm:mt-20 p-10 sm:p-14 rounded-[3rem] border relative overflow-hidden group shadow-2xl ${
+                isDark ? 'bg-gradient-to-r from-yellow-500/10 via-yellow-500/5 to-transparent border-yellow-500/30' : 'bg-gradient-to-r from-emerald-600/10 via-emerald-600/5 to-transparent border-emerald-200'
+            }`}
+          >
+            <div className="flex flex-col md:flex-row justify-between items-center gap-10">
+              <div className="text-center md:text-left">
+                <h3 className={`text-3xl sm:text-5xl font-cinzel font-black ${isDark ? 'text-yellow-400' : 'text-emerald-800'}`}>{t.fee} : BDT {EVENT_CONFIG.fee}</h3>
+                <p className={`text-base sm:text-lg opacity-60 mt-4 leading-relaxed ${!isDark && 'text-emerald-950'}`}>Inclusive of full premium buffet and exclusive Batch 231 memorabilia.</p>
+              </div>
+              <button
+                onClick={() => setIsRegistrationOpen(true)}
+                className={`w-full md:w-auto whitespace-nowrap font-black px-12 py-5 rounded-full transition-all text-lg flex items-center justify-center gap-4 group shadow-2xl hover:scale-105 active:scale-95 ${
+                  isDark ? 'bg-yellow-500 text-emerald-950 hover:bg-yellow-400' : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                }`}
+              >
+                {t.payment} <Sparkles size={24} className="animate-pulse" />
+              </button>
+            </div>
+          </motion.div>
         </div>
       </section>
 

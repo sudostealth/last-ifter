@@ -26,7 +26,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
     phone: '',
     batch: '231',
     dept: 'CSE',
-    section: 'A',
     paymentMethod: 'bkash',
     senderNo: '',
     trxId: ''
@@ -45,6 +44,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
   const validateStep1 = () => {
     const newErrors: Partial<Record<keyof RegistrationData, string>> = {};
     if (!formData.name) newErrors.name = t.required;
+
+    if (!formData.email) newErrors.email = t.required;
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = t.invalidEmail;
+
     if (!formData.studentId) newErrors.studentId = t.required;
     else if (!/^\d{9}$/.test(formData.studentId)) newErrors.studentId = t.invalidId;
     
@@ -156,6 +159,18 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
               {errors.name && <p className="text-[10px] text-red-500 ml-1">{errors.name}</p>}
             </div>
 
+            <div className="space-y-1">
+              <label className="text-[10px] uppercase tracking-wider opacity-60 ml-1">Email</label>
+              <input
+                type="email" value={formData.email} onChange={(e) => updateField('email', e.target.value)}
+                placeholder="email@example.com"
+                className={`w-full border rounded-xl px-4 py-2.5 sm:py-3 text-sm focus:outline-none focus:border-yellow-500 transition-colors ${
+                  isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-emerald-50/50 border-emerald-100 text-emerald-950'
+                }`}
+              />
+              {errors.email && <p className="text-[10px] text-red-500 ml-1">{errors.email}</p>}
+            </div>
+
             <div className="grid grid-cols-1 xs:grid-cols-2 gap-3 sm:gap-4">
               <div className="space-y-1">
                 <label className="text-[10px] uppercase tracking-wider opacity-60 ml-1">{t.studentId}</label>
@@ -181,7 +196,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 sm:gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div className="space-y-1">
                 <label className="text-[10px] uppercase tracking-wider opacity-60 ml-1">Batch</label>
                 <select 
@@ -205,19 +220,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                   <option value="CSE">CSE</option>
                   <option value="EEE">EEE</option>
                   <option value="BBA">BBA</option>
-                </select>
-              </div>
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider opacity-60 ml-1">Sec</label>
-                <select 
-                  value={formData.section} onChange={(e) => updateField('section', e.target.value)}
-                  className={`w-full border rounded-xl px-2 sm:px-4 py-2.5 sm:py-3 text-sm focus:outline-none ${
-                    isDark ? 'bg-emerald-950 border-white/10 text-white' : 'bg-emerald-50/50 border-emerald-100 text-emerald-950'
-                  }`}
-                >
-                  <option value="A">A</option>
-                  <option value="B">B</option>
-                  <option value="C">C</option>
                 </select>
               </div>
             </div>
@@ -290,12 +292,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                   className={`relative flex-1 py-4 rounded-2xl transition-all border-2 overflow-hidden flex flex-col items-center justify-center gap-2 ${
                     formData.paymentMethod === 'bkash' 
                     ? 'bg-[#D12053] border-[#D12053] text-white shadow-xl shadow-[#D12053]/20 scale-[1.05] z-10' 
-                    : 'bg-white/5 border-white/5 opacity-50 grayscale hover:opacity-100 hover:grayscale-0'
+                    : 'bg-white/10 border-white/10 opacity-70 hover:opacity-100'
                   }`}
                 >
                   <img src="https://raw.githubusercontent.com/Nayeem-231/icons/main/bkash.png" alt="bKash" className="w-12 h-auto" onError={(e) => (e.currentTarget.style.display = 'none')} />
-                  <span className={`text-xs font-black uppercase ${formData.paymentMethod === 'bkash' ? 'block' : 'hidden'}`}>bKash</span>
-                  {!formData.paymentMethod && <span className="text-xs font-black">bKash</span>}
+                  <span className="text-xs font-black uppercase">bKash</span>
                   {formData.paymentMethod === 'bkash' && <motion.div layoutId="payment-active" className="absolute top-2 right-2"><Check size={14} /></motion.div>}
                 </button>
                 <button 
@@ -303,12 +304,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                   className={`relative flex-1 py-4 rounded-2xl transition-all border-2 overflow-hidden flex flex-col items-center justify-center gap-2 ${
                     formData.paymentMethod === 'rocket' 
                     ? 'bg-[#8C3494] border-[#8C3494] text-white shadow-xl shadow-[#8C3494]/20 scale-[1.05] z-10' 
-                    : 'bg-white/5 border-white/5 opacity-50 grayscale hover:opacity-100 hover:grayscale-0'
+                    : 'bg-white/10 border-white/10 opacity-70 hover:opacity-100'
                   }`}
                 >
                   <img src="https://raw.githubusercontent.com/Nayeem-231/icons/main/rocket.png" alt="Rocket" className="w-12 h-auto" onError={(e) => (e.currentTarget.style.display = 'none')} />
-                  <span className={`text-xs font-black uppercase ${formData.paymentMethod === 'rocket' ? 'block' : 'hidden'}`}>Rocket</span>
-                  {!formData.paymentMethod && <span className="text-xs font-black">Rocket</span>}
+                  <span className="text-xs font-black uppercase">Rocket</span>
                   {formData.paymentMethod === 'rocket' && <motion.div layoutId="payment-active" className="absolute top-2 right-2"><Check size={14} /></motion.div>}
                 </button>
               </div>

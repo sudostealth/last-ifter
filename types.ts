@@ -22,7 +22,6 @@ export interface RegistrationData {
   phone: string;
   batch: string;
   dept: string;
-  section: string;
   paymentMethod: 'bkash' | 'rocket';
   senderNo: string;
   trxId: string;
