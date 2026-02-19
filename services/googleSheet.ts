@@ -37,18 +37,41 @@ export interface RegisteredUser {
 
 export const fetchRegisteredUsers = async (): Promise<RegisteredUser[]> => {
   try {
-    const response = await fetch(GOOGLE_SCRIPT_URL);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+    // Add cache-busting timestamp
+    const url = `${GOOGLE_SCRIPT_URL}?t=${new Date().getTime()}`;
+    const response = await fetch(url);
+
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+        // This usually means the script returned an error page (e.g., "Script function not found: doGet")
+        // or a Google login page (if access settings are wrong).
+        const text = await response.text();
+        console.error('Received HTML response instead of JSON. Check backend deployment settings.', text);
+        throw new Error('Backend returned HTML (likely an error page or login page).');
     }
+
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.status}`);
+    }
+
     const data = await response.json();
+
     // Validate data structure if needed
     if (Array.isArray(data)) {
       return data as RegisteredUser[];
     }
+
+    // If the backend returns an error object (e.g. { error: "..." }), handle it
+    if (data && data.error) {
+        console.error('Backend returned an error:', data.error);
+        throw new Error(data.error);
+    }
+
     return [];
   } catch (error) {
     console.error('Fetch failed:', error);
-    return [];
+    // Return empty array on failure so UI doesn't crash, but consider re-throwing
+    // or returning null to signal UI to show an error state.
+    throw error;
   }
 };
