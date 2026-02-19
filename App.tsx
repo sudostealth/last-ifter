@@ -30,9 +30,10 @@ import {
 } from 'lucide-react';
 import { Language, Theme } from './types';
 import { TRANSLATIONS, MENU_ITEMS, EVENT_CONFIG, RAMADAN_QUOTES } from './constants';
-import StarryBackground from './components/StarryBackground';
+import RamadanBackground from './components/RamadanBackground';
 import Countdown from './components/Countdown';
 import RegistrationForm from './components/RegistrationForm';
+import RegisteredUsers from './components/RegisteredUsers';
 
 const IconMap: Record<string, LucideIcon> = {
   Coffee, Utensils, Waves, Beef, Cookie, Flame, Droplets, Apple, Zap
@@ -85,7 +86,7 @@ const App: React.FC = () => {
     <div className={`relative min-h-[100dvh] transition-colors duration-1000 selection:bg-yellow-500/30 selection:text-yellow-200 ${
       isDark ? 'bg-emerald-950 text-white' : 'bg-emerald-50 text-emerald-950'
     }`}>
-      <StarryBackground theme={theme} />
+      <RamadanBackground theme={theme} />
 
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b transition-all duration-500 py-3 sm:py-4 px-4 sm:px-8 md:px-12 flex justify-between items-center ${
@@ -228,6 +229,9 @@ const App: React.FC = () => {
           </div>
         </motion.div>
       </section>
+
+      {/* Registered Users Section */}
+      <RegisteredUsers theme={theme} />
 
       {/* Rotating Ramadan Quotes Section */}
       <section className="py-20 sm:py-32 px-6 relative z-10 overflow-hidden">
@@ -388,7 +392,7 @@ const App: React.FC = () => {
               <iframe 
                 title="GUB Location"
                 className="w-full h-full transition-all duration-1000 group-hover:scale-110"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.5447703083327!2d90.49132207590861!3d23.87321018449646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755cd2287f39423%3A0xc3f608976f0c13d9!2sGreen%20University%20of%20Bangladesh%20(Permanent%20Campus)!5e0!3m2!1sen!2sbd!4v1709214711612!5m2!1sen!2sbd"
+                src="https://maps.google.com/maps?q=23.829350,90.566467&hl=en&z=17&output=embed"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 style={{ border: 0, filter: isDark ? 'grayscale(1) invert(0.9) hue-rotate(180deg) brightness(0.8)' : 'none' }}

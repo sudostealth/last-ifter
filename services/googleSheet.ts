@@ -3,7 +3,7 @@ import { RegistrationData } from '../types';
 
 /**
  * Replace the GOOGLE_SCRIPT_URL with your deployed Apps Script Web App URL.
- * See backend/code.gs for the Apps Script logic.
+ * See backend/Code.js for the Apps Script logic.
  */
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw9TONx2YzPhxTxkUtE1bGRDtuZTvziehDvtyuZgCymFT8FzrtleO-kebtPDKrx2nANLQ/exec';
 
@@ -28,32 +28,27 @@ export const submitToGoogleSheet = async (data: RegistrationData): Promise<boole
   }
 };
 
-/**
- * GOOGLE APPS SCRIPT CODE (Paste this in Extensions > Apps Script)
- * 
- * function doPost(e) {
- *   try {
- *     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
- *     var data = JSON.parse(e.postData.contents);
- *     
- *     sheet.appendRow([
- *       new Date(),
- *       data.name,
- *       data.studentId,
- *       data.email,
- *       data.phone,
- *       data.batch,
- *       data.dept,
- *       data.paymentMethod,
- *       data.senderNo,
- *       data.trxId
- *     ]);
- *     
- *     return ContentService.createTextOutput(JSON.stringify({"status": "success"}))
- *       .setMimeType(ContentService.MimeType.JSON);
- *   } catch (error) {
- *     return ContentService.createTextOutput(JSON.stringify({"status": "error", "message": error.message}))
- *       .setMimeType(ContentService.MimeType.JSON);
- *   }
- * }
- */
+export interface RegisteredUser {
+  name: string;
+  studentId: string;
+  batch: string;
+  dept: string;
+}
+
+export const fetchRegisteredUsers = async (): Promise<RegisteredUser[]> => {
+  try {
+    const response = await fetch(GOOGLE_SCRIPT_URL);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    // Validate data structure if needed
+    if (Array.isArray(data)) {
+      return data as RegisteredUser[];
+    }
+    return [];
+  } catch (error) {
+    console.error('Fetch failed:', error);
+    return [];
+  }
+};
