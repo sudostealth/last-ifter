@@ -1,5 +1,27 @@
 
-// Paste this code into your Google Apps Script editor (Extensions > Apps Script)
+/**
+ * ==========================================
+ * GOOGLE APPS SCRIPT BACKEND CODE
+ * ==========================================
+ *
+ * INSTRUCTIONS FOR DEPLOYMENT:
+ * 1. Copy all the code below into your Google Apps Script editor (Extensions > Apps Script).
+ * 2. Click "Deploy" > "Manage deployments".
+ * 3. Click the "Edit" (pencil) icon next to your existing deployment.
+ * 4. Under "Version", select "New version".
+ * 5. Ensure "Execute as" is set to "Me".
+ * 6. Ensure "Who has access" is set to "Anyone".
+ * 7. Click "Deploy".
+ *
+ * IF YOU DON'T HAVE A DEPLOYMENT YET:
+ * 1. Click "Deploy" > "New deployment".
+ * 2. Select type: "Web app".
+ * 3. Execute as: "Me".
+ * 4. Who has access: "Anyone".
+ * 5. Click "Deploy".
+ *
+ * IMPORTANT: After deploying, ensure the URL in 'services/googleSheet.ts' matches the Web App URL.
+ */
 
 function doPost(e) {
   try {
