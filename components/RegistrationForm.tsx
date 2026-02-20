@@ -98,27 +98,27 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
       <motion.div 
         initial={{ scale: 0.8, opacity: 0 }} 
         animate={{ scale: 1, opacity: 1 }}
-        className={`text-center p-6 sm:p-10 backdrop-blur-xl rounded-3xl border ${isDark ? 'bg-emerald-900/40 border-yellow-500/30' : 'bg-white/90 border-emerald-500/30'}`}
+        className={`text-center p-6 sm:p-10 backdrop-blur-xl rounded-3xl border ${isDark ? 'bg-emerald-900/40 border-yellow-500/30' : 'bg-white border-[#C6A87C]/20 shadow-2xl'}`}
       >
         <div className="relative mb-6 inline-block">
-          <CheckCircle2 size={64} className={`${isDark ? 'text-yellow-400' : 'text-emerald-600'} mx-auto`} />
+          <CheckCircle2 size={64} className={`${isDark ? 'text-yellow-400' : 'text-[#1A4D2E]'} mx-auto`} />
           <motion.div 
             animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }} 
             transition={{ repeat: Infinity, duration: 2 }}
-            className={`absolute -top-2 -right-2 ${isDark ? 'text-yellow-500' : 'text-emerald-500'}`}
+            className={`absolute -top-2 -right-2 ${isDark ? 'text-yellow-500' : 'text-[#C6A87C]'}`}
           >
             <Sparkles size={20} />
           </motion.div>
         </div>
-        <h2 className={`text-2xl sm:text-3xl font-cinzel font-bold mb-4 ${isDark ? 'text-yellow-100' : 'text-emerald-900'}`}>{t.success}</h2>
-        <p className={`mb-8 text-sm sm:text-base max-w-sm mx-auto ${isDark ? 'text-emerald-100/70' : 'text-emerald-800/70'}`}>
+        <h2 className={`text-2xl sm:text-3xl font-cinzel font-bold mb-4 ${isDark ? 'text-yellow-100' : 'text-[#0F392B]'}`}>{t.success}</h2>
+        <p className={`mb-8 text-sm sm:text-base max-w-sm mx-auto ${isDark ? 'text-emerald-100/70' : 'text-[#0F392B]/70'}`}>
           {lang === 'en' 
             ? "Your seat at the table is confirmed. Check your email for details." 
             : "আপনার আসন নিশ্চিত করা হয়েছে। বিস্তারিত তথ্যের জন্য আপনার ইমেইল চেক করুন।"}
         </p>
         <button 
           onClick={onClose}
-          className={`w-full sm:w-auto ${isDark ? 'bg-yellow-500 text-emerald-950 hover:bg-yellow-400' : 'bg-emerald-600 text-white hover:bg-emerald-700'} font-bold px-8 py-3.5 rounded-full transition-all`}
+          className={`w-full sm:w-auto ${isDark ? 'bg-yellow-500 text-emerald-950 hover:bg-yellow-400' : 'bg-[#1A4D2E] text-[#F9F7F2] hover:bg-[#143d24]'} font-bold px-8 py-3.5 rounded-full transition-all`}
         >
           {lang === 'en' ? "Return Home" : "ফিরে যান"}
         </button>
@@ -128,16 +128,16 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
 
   return (
     <div className={`relative overflow-hidden w-full max-w-lg backdrop-blur-2xl border rounded-[2rem] shadow-2xl p-5 sm:p-8 md:p-10 ${
-      isDark ? 'bg-emerald-900/50 border-white/10 text-white' : 'bg-white/95 border-emerald-100 text-emerald-950'
+      isDark ? 'bg-emerald-900/50 border-white/10 text-white' : 'bg-white border-[#C6A87C]/20 text-[#0F392B]'
     }`}>
       <div className="flex justify-between items-center mb-6 sm:mb-8">
         <div>
-          <h2 className={`text-xl sm:text-2xl font-cinzel font-bold ${isDark ? 'text-yellow-400' : 'text-emerald-700'}`}>{t.register}</h2>
-          <p className={`text-xs sm:text-sm ${isDark ? 'text-emerald-100/50' : 'text-emerald-800/50'}`}>{lang === 'en' ? `Step ${step} of 2` : `ধাপ ${step} / ২`}</p>
+          <h2 className={`text-xl sm:text-2xl font-cinzel font-bold ${isDark ? 'text-yellow-400' : 'text-[#1A4D2E]'}`}>{t.register}</h2>
+          <p className={`text-xs sm:text-sm ${isDark ? 'text-emerald-100/50' : 'text-[#0F392B]/50'}`}>{lang === 'en' ? `Step ${step} of 2` : `ধাপ ${step} / ২`}</p>
         </div>
         <div className="flex gap-1.5 sm:gap-2">
-          <div className={`h-1 sm:h-1.5 w-6 sm:w-8 rounded-full transition-all duration-500 ${step >= 1 ? (isDark ? 'bg-yellow-500' : 'bg-emerald-600') : 'bg-white/10'}`} />
-          <div className={`h-1 sm:h-1.5 w-6 sm:w-8 rounded-full transition-all duration-500 ${step >= 2 ? (isDark ? 'bg-yellow-500' : 'bg-emerald-600') : 'bg-white/10'}`} />
+          <div className={`h-1 sm:h-1.5 w-6 sm:w-8 rounded-full transition-all duration-500 ${step >= 1 ? (isDark ? 'bg-yellow-500' : 'bg-[#1A4D2E]') : (isDark ? 'bg-white/10' : 'bg-[#1A4D2E]/10')}`} />
+          <div className={`h-1 sm:h-1.5 w-6 sm:w-8 rounded-full transition-all duration-500 ${step >= 2 ? (isDark ? 'bg-yellow-500' : 'bg-[#1A4D2E]') : (isDark ? 'bg-white/10' : 'bg-[#1A4D2E]/10')}`} />
         </div>
       </div>
 
@@ -153,7 +153,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                 type="text" value={formData.name} onChange={(e) => updateField('name', e.target.value)}
                 placeholder="Full Name" 
                 className={`w-full border rounded-xl px-4 py-2.5 sm:py-3 text-sm focus:outline-none focus:border-yellow-500 transition-colors ${
-                  isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-emerald-50/50 border-emerald-100 text-emerald-950'
+                  isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-[#F9F7F2] border-[#C6A87C]/20 text-[#0F392B]'
                 }`}
               />
               {errors.name && <p className="text-[10px] text-red-500 ml-1">{errors.name}</p>}
@@ -165,7 +165,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                 type="email" value={formData.email} onChange={(e) => updateField('email', e.target.value)}
                 placeholder="email@example.com"
                 className={`w-full border rounded-xl px-4 py-2.5 sm:py-3 text-sm focus:outline-none focus:border-yellow-500 transition-colors ${
-                  isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-emerald-50/50 border-emerald-100 text-emerald-950'
+                  isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-[#F9F7F2] border-[#C6A87C]/20 text-[#0F392B]'
                 }`}
               />
               {errors.email && <p className="text-[10px] text-red-500 ml-1">{errors.email}</p>}
@@ -178,7 +178,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                   type="text" value={formData.studentId} onChange={(e) => updateField('studentId', e.target.value)}
                   placeholder="231XXXXXX" 
                   className={`w-full border rounded-xl px-4 py-2.5 sm:py-3 text-sm focus:outline-none focus:border-yellow-500 transition-colors ${
-                    isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-emerald-50/50 border-emerald-100 text-emerald-950'
+                    isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-[#F9F7F2] border-[#C6A87C]/20 text-[#0F392B]'
                   }`}
                 />
                 {errors.studentId && <p className="text-[10px] text-red-500 ml-1">{errors.studentId}</p>}
@@ -189,7 +189,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                   type="tel" value={formData.phone} onChange={(e) => updateField('phone', e.target.value)}
                   placeholder="017XXXXXXXX" 
                   className={`w-full border rounded-xl px-4 py-2.5 sm:py-3 text-sm focus:outline-none focus:border-yellow-500 transition-colors ${
-                    isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-emerald-50/50 border-emerald-100 text-emerald-950'
+                    isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-[#F9F7F2] border-[#C6A87C]/20 text-[#0F392B]'
                   }`}
                 />
                 {errors.phone && <p className="text-[10px] text-red-500 ml-1">{errors.phone}</p>}
@@ -202,7 +202,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                 <select 
                   value={formData.batch} onChange={(e) => updateField('batch', e.target.value)}
                   className={`w-full border rounded-xl px-2 sm:px-4 py-2.5 sm:py-3 text-sm focus:outline-none ${
-                    isDark ? 'bg-emerald-950 border-white/10 text-white' : 'bg-emerald-50/50 border-emerald-100 text-emerald-950'
+                    isDark ? 'bg-emerald-950 border-white/10 text-white' : 'bg-[#F9F7F2] border-[#C6A87C]/20 text-[#0F392B]'
                   }`}
                 >
                   <option value="231">231</option>
@@ -214,7 +214,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                 <select 
                   value={formData.dept} onChange={(e) => updateField('dept', e.target.value)}
                   className={`w-full border rounded-xl px-2 sm:px-4 py-2.5 sm:py-3 text-sm focus:outline-none ${
-                    isDark ? 'bg-emerald-950 border-white/10 text-white' : 'bg-emerald-50/50 border-emerald-100 text-emerald-950'
+                    isDark ? 'bg-emerald-950 border-white/10 text-white' : 'bg-[#F9F7F2] border-[#C6A87C]/20 text-[#0F392B]'
                   }`}
                 >
                   <option value="CSE">CSE</option>
@@ -227,7 +227,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
             <button
               onClick={handleNext}
               className={`w-full font-bold py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-2 mt-4 sm:mt-6 transition-all ${
-                isDark ? 'bg-yellow-500 text-emerald-950 hover:bg-yellow-400 shadow-lg' : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg'
+                isDark ? 'bg-yellow-500 text-emerald-950 hover:bg-yellow-400 shadow-lg' : 'bg-[#1A4D2E] text-[#F9F7F2] hover:bg-[#143d24] shadow-lg'
               }`}
             >
               {t.next} <ArrowRight size={18} />
@@ -238,19 +238,19 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
             key="step2" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }}
             className="space-y-4 sm:space-y-6"
           >
-            <div className={`border p-4 sm:p-5 rounded-3xl ${isDark ? 'bg-emerald-950/50 border-yellow-500/20 shadow-inner' : 'bg-emerald-50 border-emerald-100 shadow-sm'}`}>
-              <h4 className={`text-sm sm:text-base font-bold mb-4 flex items-center gap-2 ${isDark ? 'text-yellow-400' : 'text-emerald-700'}`}>
+            <div className={`border p-4 sm:p-5 rounded-3xl ${isDark ? 'bg-emerald-950/50 border-yellow-500/20 shadow-inner' : 'bg-[#F9F7F2] border-[#C6A87C]/20 shadow-sm'}`}>
+              <h4 className={`text-sm sm:text-base font-bold mb-4 flex items-center gap-2 ${isDark ? 'text-yellow-400' : 'text-[#1A4D2E]'}`}>
                 <Smartphone size={18} /> {lang === 'en' ? "Payment Information" : "পেমেন্ট তথ্য"}
               </h4>
               
               <div className="space-y-4 mb-6">
                 <div 
                   onClick={copyNumber}
-                  className={`p-4 rounded-2xl flex items-center justify-between cursor-pointer transition-all border group relative active:scale-[0.98] ${isDark ? 'bg-white/5 border-white/10 hover:border-yellow-500/30' : 'bg-white border-emerald-100 hover:border-emerald-500/30 shadow-sm'}`}
+                  className={`p-4 rounded-2xl flex items-center justify-between cursor-pointer transition-all border group relative active:scale-[0.98] ${isDark ? 'bg-white/5 border-white/10 hover:border-yellow-500/30' : 'bg-white border-[#C6A87C]/20 hover:border-[#1A4D2E]/30 shadow-sm'}`}
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-yellow-500/10 flex items-center justify-center group-hover:bg-yellow-500/20 transition-colors">
-                       <Smartphone size={24} className={isDark ? 'text-yellow-400' : 'text-emerald-600'} />
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-yellow-500/10 group-hover:bg-yellow-500/20' : 'bg-[#1A4D2E]/10 group-hover:bg-[#1A4D2E]/20'}`}>
+                       <Smartphone size={24} className={isDark ? 'text-yellow-400' : 'text-[#1A4D2E]'} />
                     </div>
                     <div>
                       <p className="text-[10px] uppercase font-bold opacity-50 tracking-wider">Send Money to</p>
@@ -258,7 +258,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                     </div>
                   </div>
                   <div className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all ${
-                      copied ? 'bg-green-500 text-white' : (isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-emerald-100 text-emerald-700')
+                      copied ? 'bg-green-500 text-white' : (isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-[#1A4D2E]/10 text-[#1A4D2E]')
                     }`}>
                     {copied ? <Check size={14} /> : <Copy size={14} />}
                     {copied ? "Copied" : "Copy"}
@@ -276,7 +276,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                   )}
                 </div>
 
-                <div className={`flex items-start gap-3 p-3 rounded-2xl border ${isDark ? 'bg-yellow-500/5 border-yellow-500/10' : 'bg-emerald-500/5 border-emerald-500/10'}`}>
+                <div className={`flex items-start gap-3 p-3 rounded-2xl border ${isDark ? 'bg-yellow-500/5 border-yellow-500/10' : 'bg-[#1A4D2E]/5 border-[#1A4D2E]/10'}`}>
                   <Info size={16} className="mt-0.5 shrink-0 opacity-60" />
                   <p className="text-[11px] sm:text-xs leading-relaxed opacity-80">
                     {lang === 'en' 
@@ -292,7 +292,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                   className={`relative flex-1 py-4 rounded-2xl transition-all border-2 overflow-hidden flex flex-col items-center justify-center gap-2 ${
                     formData.paymentMethod === 'bkash' 
                     ? 'bg-[#D12053] border-[#D12053] text-white shadow-xl shadow-[#D12053]/20 scale-[1.05] z-10' 
-                    : (isDark ? 'bg-white/10 border-white/10' : 'bg-emerald-50 border-emerald-200') + ' opacity-70 hover:opacity-100'
+                    : (isDark ? 'bg-white/10 border-white/10' : 'bg-[#F9F7F2] border-[#C6A87C]/20') + ' opacity-70 hover:opacity-100'
                   }`}
                 >
                   <img src="https://raw.githubusercontent.com/Nayeem-231/icons/main/bkash.png" alt="bKash" className="w-12 h-auto" onError={(e) => (e.currentTarget.style.display = 'none')} />
@@ -304,7 +304,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                   className={`relative flex-1 py-4 rounded-2xl transition-all border-2 overflow-hidden flex flex-col items-center justify-center gap-2 ${
                     formData.paymentMethod === 'rocket' 
                     ? 'bg-[#8C3494] border-[#8C3494] text-white shadow-xl shadow-[#8C3494]/20 scale-[1.05] z-10' 
-                    : (isDark ? 'bg-white/10 border-white/10' : 'bg-emerald-50 border-emerald-200') + ' opacity-70 hover:opacity-100'
+                    : (isDark ? 'bg-white/10 border-white/10' : 'bg-[#F9F7F2] border-[#C6A87C]/20') + ' opacity-70 hover:opacity-100'
                   }`}
                 >
                   <img src="https://raw.githubusercontent.com/Nayeem-231/icons/main/rocket.png" alt="Rocket" className="w-12 h-auto" onError={(e) => (e.currentTarget.style.display = 'none')} />
@@ -321,7 +321,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                   type="text" value={formData.senderNo} onChange={(e) => updateField('senderNo', e.target.value)}
                   placeholder="01XXXXXXXXX" 
                   className={`w-full border rounded-xl px-4 py-2.5 sm:py-3 text-sm focus:outline-none focus:border-yellow-500 transition-colors ${
-                    isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-emerald-50/50 border-emerald-100 text-emerald-950'
+                    isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-[#F9F7F2] border-[#C6A87C]/20 text-[#0F392B]'
                   }`}
                 />
               </div>
@@ -331,7 +331,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                   type="text" value={formData.trxId} onChange={(e) => updateField('trxId', e.target.value)}
                   placeholder="e.g. A9B8C7D6E5" 
                   className={`w-full border rounded-xl px-4 py-2.5 sm:py-3 text-sm focus:outline-none focus:border-yellow-500 transition-colors ${
-                    isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-emerald-50/50 border-emerald-100 text-emerald-950'
+                    isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-[#F9F7F2] border-[#C6A87C]/20 text-[#0F392B]'
                   }`}
                 />
               </div>
@@ -341,7 +341,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
               <button
                 onClick={handleBack}
                 className={`flex-[1] font-bold py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-2 transition-all text-sm ${
-                  isDark ? 'bg-white/10 hover:bg-white/20' : 'bg-emerald-100 text-emerald-900 hover:bg-emerald-200'
+                  isDark ? 'bg-white/10 hover:bg-white/20' : 'bg-[#C6A87C]/10 text-[#0F392B] hover:bg-[#C6A87C]/20'
                 }`}
               >
                 <ArrowLeft size={16} /> {t.back}
@@ -350,7 +350,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ lang, theme, onClos
                 onClick={handleSubmit}
                 disabled={loading || !formData.senderNo || !formData.trxId}
                 className={`flex-[2] font-bold py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-2 transition-all text-sm disabled:opacity-50 ${
-                  isDark ? 'bg-yellow-500 text-emerald-950 hover:bg-yellow-400 shadow-lg' : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg'
+                  isDark ? 'bg-yellow-500 text-emerald-950 hover:bg-yellow-400 shadow-lg' : 'bg-[#1A4D2E] text-[#F9F7F2] hover:bg-[#143d24] shadow-lg'
                 }`}
               >
                 {loading ? <Loader2 className="animate-spin" size={18} /> : t.submit}
