@@ -5,7 +5,7 @@ import { RegistrationData } from '../types';
  * Replace the GOOGLE_SCRIPT_URL with your deployed Apps Script Web App URL.
  * See backend/Code.js for the Apps Script logic.
  */
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw9TONx2YzPhxTxkUtE1bGRDtuZTvziehDvtyuZgCymFT8FzrtleO-kebtPDKrx2nANLQ/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_jjhpdOkqsry8k4UK9hKLaBt6VdPwkq1STVKu_8RHkok-11Vr2JQe5s6iDSPt3uRBqw/exec';
 
 export const submitToGoogleSheet = async (data: RegistrationData): Promise<boolean> => {
   try {
