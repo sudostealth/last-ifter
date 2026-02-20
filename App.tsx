@@ -26,7 +26,9 @@ import {
   ExternalLink,
   ArrowRight,
   Navigation,
-  Quote
+  Quote,
+  Check,
+  Copy
 } from 'lucide-react';
 import { Language, Theme } from './types';
 import { TRANSLATIONS, MENU_ITEMS, EVENT_CONFIG, RAMADAN_QUOTES } from './constants';
@@ -34,6 +36,7 @@ import RamadanBackground from './components/RamadanBackground';
 import Countdown from './components/Countdown';
 import RegistrationForm from './components/RegistrationForm';
 import RegisteredUsers from './components/RegisteredUsers';
+import ResponsiblePersons from './components/ResponsiblePersons';
 
 const IconMap: Record<string, LucideIcon> = {
   Coffee, Utensils, Waves, Beef, Cookie, Flame, Droplets, Apple, Zap
@@ -54,7 +57,18 @@ const App: React.FC = () => {
   const [devData, setDevData] = useState<GitHubUser | null>(null);
   const [currentQuoteIdx, setCurrentQuoteIdx] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isLocationCopied, setIsLocationCopied] = useState(false);
   const { scrollY } = useScroll();
+
+  const handleCopyLocation = () => {
+    navigator.clipboard.writeText("23.829350, 90.566467");
+    setIsLocationCopied(true);
+    setTimeout(() => setIsLocationCopied(false), 2000);
+  };
+
+  const handleGetDirections = () => {
+    window.open("https://www.google.com/maps/dir/?api=1&destination=23.829350,90.566467", "_blank");
+  };
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -398,6 +412,31 @@ const App: React.FC = () => {
                 </div>
               </div>
 
+              <div className="absolute bottom-6 right-6 sm:bottom-10 sm:right-10 z-20 flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={handleCopyLocation}
+                  className={`px-6 py-3 rounded-full shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2 font-bold backdrop-blur-md border ${
+                    isDark
+                      ? 'bg-emerald-950/80 text-white border-white/10 hover:bg-emerald-900'
+                      : 'bg-white/90 text-[#0F392B] border-[#C6A87C]/20 hover:bg-white'
+                  }`}
+                >
+                  {isLocationCopied ? <Check size={18} className="text-green-500" /> : <Copy size={18} />}
+                  <span className="text-sm">{isLocationCopied ? t.locationCopied : t.copyLocation}</span>
+                </button>
+                <button
+                  onClick={handleGetDirections}
+                  className={`px-6 py-3 rounded-full shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2 font-bold ${
+                    isDark
+                      ? 'bg-yellow-500 text-emerald-950 hover:bg-yellow-400'
+                      : 'bg-[#1A4D2E] text-[#F9F7F2] hover:bg-[#143d24]'
+                  }`}
+                >
+                  <Navigation size={18} />
+                  <span className="text-sm">{t.getDirections}</span>
+                </button>
+              </div>
+
               <iframe 
                 title="GUB Location"
                 className="w-full h-full transition-all duration-1000 group-hover:scale-110"
@@ -435,6 +474,9 @@ const App: React.FC = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Responsible Persons Section */}
+      <ResponsiblePersons lang={lang} theme={theme} />
 
       {/* Footer */}
       <footer className={`py-16 sm:py-24 px-4 sm:px-8 md:px-12 border-t relative z-10 transition-colors duration-1000 ${
