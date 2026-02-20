@@ -10,7 +10,7 @@ import {
   Apple,
   Zap
 } from 'lucide-react';
-import { MenuItem, EventConfig } from './types';
+import { MenuItem, EventConfig, ResponsiblePerson } from './types';
 
 export const EVENT_CONFIG: EventConfig = {
   date: "February 25, 2026",
@@ -75,6 +75,30 @@ export const MENU_ITEMS: MenuItem[] = [
   }
 ];
 
+export const RESPONSIBLE_PERSONS: ResponsiblePerson[] = [
+  {
+    name: "MD.SAZIB",
+    id: "231902005",
+    role: { en: "Registration & Finance Coordinator", bn: "নিবন্ধন ও অর্থ বিভাগ সমন্বয়কারী" },
+    mobile: "01875412504",
+    image: "/images/md-sazib.png"
+  },
+  {
+    name: "Md. Omor Faruk",
+    id: "231002032",
+    role: { en: "Event Program Coordinator", bn: "অনুষ্ঠান কর্মসূচি সমন্বয়কারী" },
+    mobile: "01604419446",
+    image: "/images/omor.png"
+  },
+  {
+    name: "Robin Hossain",
+    id: "231002004",
+    role: { en: "Logistics & Catering Coordinator", bn: "লজিস্টিকস ও আপ্যায়ন সমন্বয়কারী" },
+    mobile: "01312427030",
+    image: "/images/robin.png"
+  }
+];
+
 export const TRANSLATIONS = {
   en: {
     title: "Last Iftar Party",
@@ -105,7 +129,12 @@ export const TRANSLATIONS = {
     invalidId: "Invalid student ID format",
     required: "This field is required",
     mapLabel: "Find Us Here",
-    invalidEmail: "Invalid email address"
+    invalidEmail: "Invalid email address",
+    responsiblePersons: "Responsible Persons",
+    contact: "Contact",
+    copyLocation: "Copy Location",
+    getDirections: "Get Directions",
+    locationCopied: "Location Copied!"
   },
   bn: {
     title: "শেষ ইফতার পার্টি",
@@ -136,6 +165,11 @@ export const TRANSLATIONS = {
     invalidId: "ভুল আইডি ফরম্যাট",
     required: "এই তথ্যটি আবশ্যক",
     mapLabel: "আমাদের অবস্থান",
-    invalidEmail: "ভুল ইমেইল"
+    invalidEmail: "ভুল ইমেইল",
+    responsiblePersons: "দায়িত্বপ্রাপ্ত ব্যক্তিবর্গ",
+    contact: "যোগাযোগ করুন",
+    copyLocation: "লোকেশন কপি করুন",
+    getDirections: "ডাইরেকশন দেখুন",
+    locationCopied: "লোকেশন কপি হয়েছে!"
   }
 };

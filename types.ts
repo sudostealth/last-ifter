@@ -33,3 +33,11 @@ export interface EventConfig {
   venue: string;
   fee: number;
 }
+
+export interface ResponsiblePerson {
+  name: string;
+  id: string;
+  role: { en: string; bn: string };
+  mobile: string;
+  image: string;
+}
